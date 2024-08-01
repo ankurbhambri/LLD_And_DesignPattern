@@ -1,4 +1,4 @@
-package TicTacToe.Model;
+package TicTacToe__LLD.Model;
 
 public class OPiece extends PlayingPiece {
     public OPiece() {
