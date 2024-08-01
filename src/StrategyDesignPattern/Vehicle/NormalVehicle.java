@@ -1,6 +1,6 @@
-package DesignStrategyPattern.Vehicle;
+package StrategyDesignPattern.Vehicle;
 
-import DesignStrategyPattern.DriveStrategy.NormalDrive;
+import StrategyDesignPattern.DriveStrategy.NormalDrive;
 
 public class NormalVehicle extends Vehicle {
     NormalVehicle() { super( new NormalDrive());}

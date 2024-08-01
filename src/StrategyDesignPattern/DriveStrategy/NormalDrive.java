@@ -1,4 +1,4 @@
-package DesignStrategyPattern.DriveStrategy;
+package StrategyDesignPattern.DriveStrategy;
 
 public class NormalDrive implements IDriveStrategy {
     @Override

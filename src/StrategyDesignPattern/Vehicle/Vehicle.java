@@ -1,6 +1,6 @@
-package DesignStrategyPattern.Vehicle;
+package StrategyDesignPattern.Vehicle;
 
-import DesignStrategyPattern.DriveStrategy.IDriveStrategy;
+import StrategyDesignPattern.DriveStrategy.IDriveStrategy;
 
 
 

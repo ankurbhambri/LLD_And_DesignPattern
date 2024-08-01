@@ -1,7 +1,7 @@
-package DesignStrategyPattern;
+package StrategyDesignPattern;
 
-import DesignStrategyPattern.DriveStrategy.SportsDrive;
-import DesignStrategyPattern.Vehicle.Vehicle;
+import StrategyDesignPattern.DriveStrategy.SportsDrive;
+import StrategyDesignPattern.Vehicle.Vehicle;
 
 public class Main {
 
