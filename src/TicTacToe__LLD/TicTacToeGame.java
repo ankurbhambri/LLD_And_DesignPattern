@@ -1,10 +1,10 @@
-package TicTacToe;
+package TicTacToe__LLD;
 
-import TicTacToe.Model.Board;
-import TicTacToe.Model.PieceType;
-import TicTacToe.Model.Player;
-import TicTacToe.Model.OPiece;
-import TicTacToe.Model.XPiece;
+import TicTacToe__LLD.Model.Board;
+import TicTacToe__LLD.Model.PieceType;
+import TicTacToe__LLD.Model.Player;
+import TicTacToe__LLD.Model.OPiece;
+import TicTacToe__LLD.Model.XPiece;
 import com.sun.tools.javac.util.Pair;
 
 import java.util.Deque;

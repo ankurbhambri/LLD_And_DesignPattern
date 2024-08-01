@@ -1,4 +1,4 @@
-package TicTacToe.Model;
+package TicTacToe__LLD.Model;
 
 import java.util.concurrent.ThreadLocalRandom;
 
