@@ -1,4 +1,4 @@
-package TicTacToe__LLD.Model;
+package TicTacToe__LLD;
 import  com.sun.tools.javac.util.Pair;
 
 import java.util.ArrayList;

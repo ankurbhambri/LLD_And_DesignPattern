@@ -1,4 +1,4 @@
-package TicTacToe__LLD.Model;
+package TicTacToe__LLD;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -6,7 +6,7 @@ public class Dice {
 
     int diceCount;
     int min = 1;
-    int max =6;
+    int max = 6;
 
     public Dice(int diceCount){
         this.diceCount = diceCount;
