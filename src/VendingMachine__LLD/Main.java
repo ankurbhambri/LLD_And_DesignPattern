@@ -1,4 +1,4 @@
-package VendingMachine_LLD;
+package VendingMachine__LLD;
 
 public class Main {
     public static void main(String[] args) {

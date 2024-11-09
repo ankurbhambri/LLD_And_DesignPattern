@@ -1,4 +1,4 @@
-package VendingMachine_LLD;
+package VendingMachine__LLD;
 
 import java.util.Map;
 
