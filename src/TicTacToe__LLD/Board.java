@@ -1,5 +1,5 @@
 package TicTacToe__LLD;
-import  com.sun.tools.javac.util.Pair;
+// import  com.sun.tools.javac.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,17 @@ import java.util.List;
 public class Board {
     public int size;
     public PlayingPiece[][] board;
+
+    // Simple generic Pair class
+    public static class Pair<U, V> {
+        public final U first;
+        public final V second;
+
+        public Pair(U first, V second) {
+            this.first = first;
+            this.second = second;
+        }
+    }
 
     public Board(int size) {
         this.size = size;

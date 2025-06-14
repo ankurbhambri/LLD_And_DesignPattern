@@ -9,7 +9,7 @@ public class OrdinaryVehicleFactory implements IVehicleFactory{
         case "Swift":
             return new Swift();
         case "Tata":
-            return new Swift();
+            return new Tata();
         }
         return null;
     }

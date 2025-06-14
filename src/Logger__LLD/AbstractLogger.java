@@ -7,6 +7,7 @@ public abstract class AbstractLogger {
     public void setNextLoggingLevel(AbstractLogger nextLogger) {
         this.nextLogger = nextLogger;
     }
+
     void logMessage(int level, String msg, LogSubject logSubject) {
         if (this.level == level) {
             display(msg, logSubject);
@@ -15,5 +16,6 @@ public abstract class AbstractLogger {
             nextLogger.logMessage(level, msg, logSubject);
         }
     }
+
     protected abstract void display(String msg, LogSubject logSubject);
 }

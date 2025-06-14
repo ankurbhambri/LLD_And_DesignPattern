@@ -1,12 +1,22 @@
 package TicTacToe__LLD;
 
-import com.sun.tools.javac.util.Pair;
+// import com.sun.tools.javac.util.Pair;
 
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
+// Simple generic Pair class since com.sun.tools.javac.util.Pair is not accessible
+class Pair<K, V> {
+    public final K first;
+    public final V second;
+
+    public Pair(K first, V second) {
+        this.first = first;
+        this.second = second;
+    }
+}
 
 public class TicTacToeGame {
     Deque<Player> players;
@@ -36,15 +46,16 @@ public class TicTacToeGame {
     public String startGame(){
 
         boolean noWinner = true;
+        try (Scanner inputScanner = new Scanner(System.in)) {
 
-        while(noWinner){
+            while(noWinner){
 
-            // Take out the player whose turn is and also put the player in the list back
-            Player playerTurn = players.removeFirst();
+                // Take out the player whose turn is and also put the player in the list back
+                Player playerTurn = players.removeFirst();
 
             //get the free space from the board
             gameBoard.printBoard();
-            List<Pair<Integer, Integer>> freeSpaces =  gameBoard.getFreeCells();
+            List<Board.Pair<Integer, Integer>> freeSpaces =  gameBoard.getFreeCells();
             if(freeSpaces.isEmpty()) {
                 noWinner = false;
                 continue;
@@ -52,7 +63,6 @@ public class TicTacToeGame {
 
             // Read the user input
             System.out.print("Player: " + playerTurn.name + " Enter row, column: ");
-            Scanner inputScanner = new Scanner(System.in);
             String s = inputScanner.nextLine();
             String[] values = s.split(",");
             int inputRow = Integer.parseInt(values[0]);
@@ -78,6 +88,11 @@ public class TicTacToeGame {
         }
 
         return "tie";
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error occurred during the game.";
+        }
     }
 
     public boolean isThereWinner(int row, int column, PieceType pieceType) {

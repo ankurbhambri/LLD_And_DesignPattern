@@ -6,9 +6,9 @@ public class Laptop implements IComputer{
     private final String cpu;
 
     public Laptop(String ram, String hdd, String cpu){
-        this.ram=ram;
-        this.hdd=hdd;
-        this.cpu=cpu;
+        this.ram = ram;
+        this.hdd = hdd;
+        this.cpu = cpu;
     }
 
     @Override

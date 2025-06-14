@@ -16,6 +16,7 @@ public class Logger implements Cloneable, Serializable {
             throw new RuntimeException("Use getInstance() method to get the single instance of this class.");
         }
     }
+
     public static Logger getInstance() {
         if (loggerInstance == null) {
             synchronized (Logger.class) {
@@ -28,9 +29,11 @@ public class Logger implements Cloneable, Serializable {
         }
         return loggerInstance;
     }
+
     protected Object clone() throws CloneNotSupportedException {
         throw new CloneNotSupportedException("Cloning of this class is not allowed");
     }
+
     protected Object readResolve() {
         return loggerInstance;
     }
@@ -46,4 +49,5 @@ public class Logger implements Cloneable, Serializable {
     public void debug(String msg) {
         createLog(3, msg);
     }
+
 }
