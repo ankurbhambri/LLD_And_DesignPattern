@@ -1,4 +1,6 @@
-package Decorator_DesignPattern.Medium;
+/* Here we have extended the functionality to include drinks and other fast food items and Order Management */
+
+package Decorator.Medium;
 
 import java.util.ArrayList;
 import java.util.List;
