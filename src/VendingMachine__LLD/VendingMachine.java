@@ -16,15 +16,15 @@ public class VendingMachine {
         }
     }
 
-    public void addObjects(String key, Integer val) {
+    // public void addObjects(String key, Integer val) {
 
-        int[] pos = getFreeSpace(); // Assuming this method returns an int array with row and col
-//        if (pos != null) {
-//            int row = pos[0];
-//            int col = pos[1];
-//            board[row][col].put(key, val);
-//        }
-    }
+        // int[] pos = getFreeSpace(); // Assuming this method returns an int array with row and col
+    //    if (pos != null) {
+    //        int row = pos[0];
+    //        int col = pos[1];
+    //        board[row][col].put(key, val);
+    //    }
+    // }
 
     public int[] getFreeSpace()
     {
