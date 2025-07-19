@@ -12,11 +12,11 @@
  * Why Use the Decorator Pattern?
  * 
  * Solves Class Explosion Problem:
- * Without decorators, you’d need a subclass for every combination of features
+ * Without decorators, we’d need a subclass for every combination of features
  * (e.g., CheesePizza, OnionCheesePizza, OnionCheeseOlivePizza).
- * For n features, you could end up with 2^n subclasses, making code
+ * For n features, we could end up with 2^n subclasses, making code
  * unmanageable.
- * Decorators allow you to combine features dynamically without creating new
+ * Decorators allows us to combine features dynamically without creating new
  * subclasses.
  * 
  * 
@@ -40,13 +40,16 @@
  * 
  * When you need to add responsibilities to objects dynamically without
  * modifying their code.
+ * 
  * When creating subclasses for every combination of features is impractical
  * (class explosion).
+ * 
  * When you want to keep the core class simple and add optional features
  * separately.
+ * 
  * Examples:
  * Adding toppings to a pizza.
- * Enhancing UI components (e.g., adding scrollbars or borders to a window).
+ * Enhancing UI components (e.g., adding scrollbar or borders to a window).
  * Wrapping file streams (e.g., Java’s BufferedInputStream wraps
  * FileInputStream).
  *
@@ -113,7 +116,7 @@
  * 
  * 
  * GUI Frameworks:
- * Adding scrollbars, borders, or shadows to UI components.
+ * Adding scrollbar, borders, or shadows to UI components.
  * 
  * 
  * Web Filters:
@@ -135,11 +138,11 @@ package Decorator.Easy;
 interface BasePizza {
 
     String getDescription();
-
     double getCost();
 }
 
 class PlainPizza implements BasePizza {
+
     @Override
     public String getDescription() {
         return "Plain Pizza";
@@ -152,6 +155,7 @@ class PlainPizza implements BasePizza {
 }
 
 class MargheritaPizza implements BasePizza {
+
     @Override
     public String getDescription() {
         return "Margherita Pizza";
@@ -164,6 +168,7 @@ class MargheritaPizza implements BasePizza {
 }
 
 class CheesePizza implements BasePizza {
+
     @Override
     public String getDescription() {
         return "Cheese Pizza";
@@ -195,6 +200,7 @@ abstract class PizzaDecorator implements BasePizza {
 }
 
 class CheeseTopping extends PizzaDecorator {
+
     public CheeseTopping(BasePizza pizza) {
         super(pizza);
     }
@@ -211,6 +217,7 @@ class CheeseTopping extends PizzaDecorator {
 }
 
 class PepperoniTopping extends PizzaDecorator {
+
     public PepperoniTopping(BasePizza pizza) {
         super(pizza);
     }
@@ -227,6 +234,7 @@ class PepperoniTopping extends PizzaDecorator {
 }
 
 class VeggieTopping extends PizzaDecorator {
+
     public VeggieTopping(BasePizza pizza) {
         super(pizza);
     }
@@ -243,6 +251,7 @@ class VeggieTopping extends PizzaDecorator {
 }
 
 class SmallSizeDecorator extends PizzaDecorator {
+
     public SmallSizeDecorator(BasePizza pizza) {
         super(pizza);
     }
@@ -259,6 +268,7 @@ class SmallSizeDecorator extends PizzaDecorator {
 }
 
 class MediumSizeDecorator extends PizzaDecorator {
+
     public MediumSizeDecorator(BasePizza pizza) {
         super(pizza);
     }
@@ -275,6 +285,7 @@ class MediumSizeDecorator extends PizzaDecorator {
 }
 
 class LargeSizeDecorator extends PizzaDecorator {
+
     public LargeSizeDecorator(BasePizza pizza) {
         super(pizza);
     }

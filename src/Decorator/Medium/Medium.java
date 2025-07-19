@@ -4,21 +4,26 @@ package Decorator.Medium;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-interface OrderItem {
-    String getDescription();
+// interface OrderItem {
+//     String getDescription();
+//     double getCost();
+// }
 
-    double getCost();
+abstract class OrderItem {
+
+    public abstract String getDescription();
+    public abstract double getCost();
+
+    // Concrete methods → already implemented and can be reused or overridden.
+    @Override
+    public String toString() {
+        return getDescription() + ": $" + String.format("%.2f", getCost());
+    }
 }
 
-interface BasePizza extends OrderItem {
-    String getDescription();
+class PlainPizza extends OrderItem {
 
-    double getCost();
-}
-
-class PlainPizza implements BasePizza {
     @Override
     public String getDescription() {
         return "Plain Pizza";
@@ -30,7 +35,8 @@ class PlainPizza implements BasePizza {
     }
 }
 
-class MargheritaPizza implements BasePizza {
+class MargheritaPizza extends OrderItem {
+
     @Override
     public String getDescription() {
         return "Margherita Pizza";
@@ -42,7 +48,8 @@ class MargheritaPizza implements BasePizza {
     }
 }
 
-class CheesePizza implements BasePizza {
+class CheesePizza extends OrderItem {
+
     @Override
     public String getDescription() {
         return "Cheese Pizza";
@@ -54,26 +61,25 @@ class CheesePizza implements BasePizza {
     }
 }
 
-abstract class PizzaDecorator implements BasePizza {
-    protected BasePizza pizza;
+// Abstract Decorator
+abstract class PizzaDecorator extends OrderItem {
 
-    public PizzaDecorator(BasePizza pizza) {
+    protected OrderItem pizza;
+
+    public PizzaDecorator(OrderItem pizza) {
         this.pizza = pizza;
     }
 
     @Override
-    public String getDescription() {
-        return pizza.getDescription();
-    }
-
-    @Override
-    public double getCost() {
-        return pizza.getCost();
+    public String toString() {
+        return getDescription() + ": $" + String.format("%.2f", getCost());
     }
 }
 
+// Toppings
 class CheeseTopping extends PizzaDecorator {
-    public CheeseTopping(BasePizza pizza) {
+
+    public CheeseTopping(OrderItem pizza) {
         super(pizza);
     }
 
@@ -89,7 +95,8 @@ class CheeseTopping extends PizzaDecorator {
 }
 
 class PepperoniTopping extends PizzaDecorator {
-    public PepperoniTopping(BasePizza pizza) {
+
+    public PepperoniTopping(OrderItem pizza) {
         super(pizza);
     }
 
@@ -105,7 +112,8 @@ class PepperoniTopping extends PizzaDecorator {
 }
 
 class VeggieTopping extends PizzaDecorator {
-    public VeggieTopping(BasePizza pizza) {
+
+    public VeggieTopping(OrderItem pizza) {
         super(pizza);
     }
 
@@ -120,55 +128,53 @@ class VeggieTopping extends PizzaDecorator {
     }
 }
 
-class SmallSizeDecorator extends PizzaDecorator {
-    public SmallSizeDecorator(BasePizza pizza) {
+// Size Enum and Decorator
+enum Size {
+
+    SMALL(0.8, "Small"),
+    MEDIUM(1.0, "Medium"),
+    LARGE(1.5, "Large");
+
+    private final double multiplier;
+    private final String label;
+
+    Size(double multiplier, String label) {
+        this.multiplier = multiplier;
+        this.label = label;
+    }
+
+    public double apply(double baseCost) {
+        return baseCost * multiplier;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+}
+
+class SizeDecorator extends PizzaDecorator {
+
+    private final Size size;
+
+    public SizeDecorator(OrderItem pizza, Size size) {
         super(pizza);
+        this.size = size;
     }
 
     @Override
     public String getDescription() {
-        return pizza.getDescription() + " (Small)";
+        return pizza.getDescription() + " (" + size.getLabel() + ")";
     }
 
     @Override
     public double getCost() {
-        return pizza.getCost() * 0.8;
+        return size.apply(pizza.getCost());
     }
 }
 
-class MediumSizeDecorator extends PizzaDecorator {
-    public MediumSizeDecorator(BasePizza pizza) {
-        super(pizza);
-    }
+// Other Items
+class Cola extends OrderItem {
 
-    @Override
-    public String getDescription() {
-        return pizza.getDescription() + " (Medium)";
-    }
-
-    @Override
-    public double getCost() {
-        return pizza.getCost() * 1.0;
-    }
-}
-
-class LargeSizeDecorator extends PizzaDecorator {
-    public LargeSizeDecorator(BasePizza pizza) {
-        super(pizza);
-    }
-
-    @Override
-    public String getDescription() {
-        return pizza.getDescription() + " (Large)";
-    }
-
-    @Override
-    public double getCost() {
-        return pizza.getCost() * 1.5;
-    }
-}
-
-class Cola implements OrderItem {
     @Override
     public String getDescription() {
         return "Cola";
@@ -180,7 +186,8 @@ class Cola implements OrderItem {
     }
 }
 
-class Lemonade implements OrderItem {
+class Lemonade extends OrderItem {
+
     @Override
     public String getDescription() {
         return "Lemonade";
@@ -192,10 +199,11 @@ class Lemonade implements OrderItem {
     }
 }
 
-class VeggieBurger implements OrderItem {
+class Burger extends OrderItem {
+
     @Override
     public String getDescription() {
-        return "Veggie Burger";
+        return "Burger";
     }
 
     @Override
@@ -204,68 +212,50 @@ class VeggieBurger implements OrderItem {
     }
 }
 
-class ChickenBurger implements OrderItem {
-    @Override
-    public String getDescription() {
-        return "Chicken Burger";
-    }
-
-    @Override
-    public double getCost() {
-        return 5.5;
-    }
-}
-
+// Order Manager
 class Order {
-    private List<OrderItem> items = new ArrayList<>();
+    private final List<OrderItem> items = new ArrayList<>();
 
     public void addItem(OrderItem item) {
         items.add(item);
     }
 
-    public String getDescription() {
-        return items.stream()
-                .map(OrderItem::getDescription)
-                .collect(Collectors.joining("; "));
+    public double getCost() {
+        return items.stream().mapToDouble(OrderItem::getCost).sum();
     }
 
-    public double getCost() {
-        return items.stream()
-                .mapToDouble(OrderItem::getCost)
-                .sum();
+    public void printSummary() {
+        System.out.println("\n");
+        System.out.println("Order Summary:");
+        items.forEach(item -> System.out.println("- " + item));
+        System.out.printf("Total Cost: $%.2f%n", getCost());
+        System.out.println("\n");
     }
 }
 
+// Main
 public class Medium {
     public static void main(String[] args) {
+
+        // Large Margherita with Cheese, Veggies + Cola
         Order order = new Order();
 
-        // Test Case 1: Large Margherita with Cheese, Veggies + Cola
-        BasePizza pizza1 = new MargheritaPizza();
-        pizza1 = new LargeSizeDecorator(pizza1);
-        pizza1 = new CheeseTopping(pizza1);
-        pizza1 = new VeggieTopping(pizza1);
+        OrderItem pizza1 = new VeggieTopping(new CheeseTopping((new SizeDecorator(new MargheritaPizza(), Size.LARGE))));
+
         order.addItem(pizza1);
         order.addItem(new Cola());
 
-        // Test Case 2: Small Plain Pizza with Pepperoni + Lemonade + Veggie Burger
-        BasePizza pizza2 = new PlainPizza();
-        pizza2 = new SmallSizeDecorator(pizza2);
-        pizza2 = new PepperoniTopping(pizza2);
-        order.addItem(pizza2);
-        order.addItem(new Lemonade());
-        order.addItem(new VeggieBurger());
+        order.printSummary();
 
-        // Test Case 3: Medium Cheese Pizza with Double Cheese + Chicken Burger
-        BasePizza pizza3 = new CheesePizza();
-        pizza3 = new MediumSizeDecorator(pizza3);
-        pizza3 = new CheeseTopping(pizza3);
-        pizza3 = new CheeseTopping(pizza3);
-        order.addItem(pizza3);
-        order.addItem(new ChickenBurger());
+        // Small Plain Pizza with Pepperoni + Lemonade + Veggie Burger
+        Order order2 = new Order();
 
-        // Print order details
-        System.out.println("Order Details: " + order.getDescription());
-        System.out.printf("Total Cost: $%.2f%n", order.getCost());
+        OrderItem pizza2 = new PepperoniTopping(new SizeDecorator(new PlainPizza(), Size.SMALL));
+
+        order2.addItem(pizza2);
+        order2.addItem(new Lemonade());
+        order2.addItem(new Burger());
+
+        order2.printSummary();
     }
 }
