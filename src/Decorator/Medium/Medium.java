@@ -48,19 +48,6 @@ class MargheritaPizza extends OrderItem {
     }
 }
 
-class CheesePizza extends OrderItem {
-
-    @Override
-    public String getDescription() {
-        return "Cheese Pizza";
-    }
-
-    @Override
-    public double getCost() {
-        return 7.0;
-    }
-}
-
 // Abstract Decorator
 abstract class PizzaDecorator extends OrderItem {
 
@@ -68,11 +55,6 @@ abstract class PizzaDecorator extends OrderItem {
 
     public PizzaDecorator(OrderItem pizza) {
         this.pizza = pizza;
-    }
-
-    @Override
-    public String toString() {
-        return getDescription() + ": $" + String.format("%.2f", getCost());
     }
 }
 

@@ -135,13 +135,25 @@
 
 package Decorator.Easy;
 
-interface BasePizza {
+// interface BasePizza {
 
-    String getDescription();
-    double getCost();
+//     String getDescription();
+//     double getCost();
+// }
+
+abstract class BasePizza {
+
+    public abstract String getDescription();
+    public abstract double getCost();
+
+    // Concrete methods → already implemented and can be reused or overridden.
+    @Override
+    public String toString() {
+        return getDescription() + ": $" + String.format("%.2f", getCost());
+    }
 }
 
-class PlainPizza implements BasePizza {
+class PlainPizza extends BasePizza {
 
     @Override
     public String getDescription() {
@@ -154,7 +166,7 @@ class PlainPizza implements BasePizza {
     }
 }
 
-class MargheritaPizza implements BasePizza {
+class MargheritaPizza extends BasePizza {
 
     @Override
     public String getDescription() {
@@ -167,20 +179,7 @@ class MargheritaPizza implements BasePizza {
     }
 }
 
-class CheesePizza implements BasePizza {
-
-    @Override
-    public String getDescription() {
-        return "Cheese Pizza";
-    }
-
-    @Override
-    public double getCost() {
-        return 7.0;
-    }
-}
-
-abstract class PizzaDecorator implements BasePizza {
+abstract class PizzaDecorator extends BasePizza {
 
     protected BasePizza pizza;
 
@@ -250,70 +249,59 @@ class VeggieTopping extends PizzaDecorator {
     }
 }
 
-class SmallSizeDecorator extends PizzaDecorator {
+// Size Enum and Decorator
+enum Size {
 
-    public SmallSizeDecorator(BasePizza pizza) {
-        super(pizza);
+    SMALL(0.8, "Small"),
+    MEDIUM(1.0, "Medium"),
+    LARGE(1.5, "Large");
+
+    private final double multiplier;
+    private final String label;
+
+    Size(double multiplier, String label) {
+        this.multiplier = multiplier;
+        this.label = label;
     }
 
-    @Override
-    public String getDescription() {
-        return pizza.getDescription() + " (Small)";
+    public double apply(double baseCost) {
+        return baseCost * multiplier;
     }
 
-    @Override
-    public double getCost() {
-        return pizza.getCost() * 0.8; // 20% cheaper
-    }
-}
-
-class MediumSizeDecorator extends PizzaDecorator {
-
-    public MediumSizeDecorator(BasePizza pizza) {
-        super(pizza);
-    }
-
-    @Override
-    public String getDescription() {
-        return pizza.getDescription() + " (Medium)";
-    }
-
-    @Override
-    public double getCost() {
-        return pizza.getCost() * 1.0; // Same cost
+    public String getLabel() {
+        return label;
     }
 }
 
-class LargeSizeDecorator extends PizzaDecorator {
+class SizeDecorator extends PizzaDecorator {
 
-    public LargeSizeDecorator(BasePizza pizza) {
+    private final Size size;
+
+    public SizeDecorator(BasePizza pizza, Size size) {
         super(pizza);
+        this.size = size;
     }
 
     @Override
     public String getDescription() {
-        return pizza.getDescription() + " (Large)";
+        return pizza.getDescription() + " (" + size.getLabel() + ")";
     }
 
     @Override
     public double getCost() {
-        return pizza.getCost() * 2.0; // 100% costlier
+        return size.apply(pizza.getCost());
     }
 }
 
 public class Easy {
     public static void main(String[] args) {
 
-        // Test Case 1: Large Margherita with Cheese and Veggies
-        BasePizza pizza1 = new VeggieTopping(new CheeseTopping(new LargeSizeDecorator(new MargheritaPizza())));
-        System.out.printf("Pizza 1: %s | Cost: $%.2f%n", pizza1.getDescription(), pizza1.getCost()); // 18.50 cost
-
-        // Test Case 2: Small Plain Pizza with Pepperoni
-        BasePizza pizza2 = new PepperoniTopping(new SmallSizeDecorator(new PlainPizza()));
+        // Test Case 1: Small Plain Pizza with Pepperoni
+        BasePizza pizza2 = new PepperoniTopping(new SizeDecorator(new PlainPizza(), Size.SMALL));
         System.out.printf("Pizza 2: %s | Cost: $%.2f%n", pizza2.getDescription(), pizza2.getCost()); // 6.00 cost
 
-        // Test Case 3: Medium Cheese Pizza with Double Cheese
-        BasePizza pizza3 = new CheeseTopping(new MediumSizeDecorator(new CheesePizza()));
+        // Test Case 2: Medium Margherita Pizza with Cheese
+        BasePizza pizza3 = new CheeseTopping(new SizeDecorator(new MargheritaPizza(), Size.MEDIUM));
         System.out.printf("Pizza 3: %s | Cost: $%.2f%n", pizza3.getDescription(), pizza3.getCost()); // 8.50 cost
     }
 }
