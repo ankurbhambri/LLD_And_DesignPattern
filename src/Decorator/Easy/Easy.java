@@ -135,123 +135,121 @@
 
 package Decorator.Easy;
 
-// interface BasePizza {
-
-//     String getDescription();
-//     double getCost();
-// }
-
+// 🔵 Base Abstract Class
 abstract class BasePizza {
-
     public abstract String getDescription();
     public abstract double getCost();
 
-    // Concrete methods → already implemented and can be reused or overridden.
     @Override
     public String toString() {
         return getDescription() + ": $" + String.format("%.2f", getCost());
     }
 }
 
+// 🔵 Concrete Pizza Classes
 class PlainPizza extends BasePizza {
-
     @Override
-    public String getDescription() {
-        return "Plain Pizza";
-    }
-
+    public String getDescription() { return "Plain Pizza"; }
     @Override
-    public double getCost() {
-        return 5.0;
-    }
+    public double getCost() { return 5.0; }
 }
 
 class MargheritaPizza extends BasePizza {
-
     @Override
-    public String getDescription() {
-        return "Margherita Pizza";
-    }
-
+    public String getDescription() { return "Margherita Pizza"; }
     @Override
-    public double getCost() {
-        return 8.0;
-    }
+    public double getCost() { return 8.0; }
 }
 
+class FarmhousePizza extends BasePizza {
+    @Override
+    public String getDescription() { return "Farmhouse Pizza"; }
+    @Override
+    public double getCost() { return 8.0; }
+}
+
+class VeggiePizza extends BasePizza {
+    @Override
+    public String getDescription() { return "Veggie Pizza"; }
+    @Override
+    public double getCost() { return 7.0; }
+}
+
+// 🔵 Decorator Base Class
 abstract class PizzaDecorator extends BasePizza {
-
     protected BasePizza pizza;
-
-    public PizzaDecorator(BasePizza pizza) {
-        this.pizza = pizza;
-    }
-
+    public PizzaDecorator(BasePizza pizza) { this.pizza = pizza; }
     @Override
-    public String getDescription() {
-        return pizza.getDescription();
-    }
-
+    public String getDescription() { return pizza.getDescription(); }
     @Override
-    public double getCost() {
-        return pizza.getCost();
-    }
+    public double getCost() { return pizza.getCost(); }
 }
 
+// 🔵 Topping Decorators
 class CheeseTopping extends PizzaDecorator {
-
-    public CheeseTopping(BasePizza pizza) {
-        super(pizza);
-    }
-
+    public CheeseTopping(BasePizza pizza) { super(pizza); }
     @Override
-    public String getDescription() {
-        return pizza.getDescription() + ", Cheese";
-    }
-
+    public String getDescription() { return pizza.getDescription() + ", Cheese"; }
     @Override
-    public double getCost() {
-        return pizza.getCost() + 1.5;
-    }
+    public double getCost() { return pizza.getCost() + 1.5; }
 }
 
 class PepperoniTopping extends PizzaDecorator {
-
-    public PepperoniTopping(BasePizza pizza) {
-        super(pizza);
-    }
-
+    public PepperoniTopping(BasePizza pizza) { super(pizza); }
     @Override
-    public String getDescription() {
-        return pizza.getDescription() + ", Pepperoni";
-    }
-
+    public String getDescription() { return pizza.getDescription() + ", Pepperoni"; }
     @Override
-    public double getCost() {
-        return pizza.getCost() + 2.0;
-    }
+    public double getCost() { return pizza.getCost() + 2.0; }
 }
 
 class VeggieTopping extends PizzaDecorator {
+    public VeggieTopping(BasePizza pizza) { super(pizza); }
+    @Override
+    public String getDescription() { return pizza.getDescription() + ", Veggies"; }
+    @Override
+    public double getCost() { return pizza.getCost() + 1.0; }
+}
 
-    public VeggieTopping(BasePizza pizza) {
+// 🔵 ✅ NEW – Add-ons Decorators (Coke & Fries)
+class CokeAddon extends PizzaDecorator {
+    public CokeAddon(BasePizza pizza) { super(pizza); }
+    @Override
+    public String getDescription() { return pizza.getDescription() + ", Coke"; }
+    @Override
+    public double getCost() { return pizza.getCost() + 1.8; }  // Coke price
+}
+
+class FriesAddon extends PizzaDecorator {
+    public FriesAddon(BasePizza pizza) { super(pizza); }
+    @Override
+    public String getDescription() { return pizza.getDescription() + ", Fries"; }
+    @Override
+    public double getCost() { return pizza.getCost() + 2.5; }  // Fries price
+}
+
+// 🔵 ✅ NEW – Combo Offer Decorator (Free Coke & Fries + Discount)
+class ComboOfferDecorator extends PizzaDecorator {
+    private double comboDiscount;
+
+    public ComboOfferDecorator(BasePizza pizza, double comboDiscount) {
         super(pizza);
+        this.comboDiscount = comboDiscount;
     }
 
     @Override
     public String getDescription() {
-        return pizza.getDescription() + ", Veggies";
+        return pizza.getDescription() + " (Combo Offer: Free Coke & Fries)";
     }
 
     @Override
     public double getCost() {
-        return pizza.getCost() + 1.0;
+        // Combo offer pe discount milega, Coke & Fries FREE hai
+        return pizza.getCost() - comboDiscount;
     }
 }
 
-// Size Enum and Decorator
+// 🔵 Size Enum & Decorator
 enum Size {
-
     SMALL(0.8, "Small"),
     MEDIUM(1.0, "Medium"),
     LARGE(1.5, "Large");
@@ -274,34 +272,46 @@ enum Size {
 }
 
 class SizeDecorator extends PizzaDecorator {
-
     private final Size size;
-
     public SizeDecorator(BasePizza pizza, Size size) {
         super(pizza);
         this.size = size;
     }
-
     @Override
-    public String getDescription() {
-        return pizza.getDescription() + " (" + size.getLabel() + ")";
-    }
-
+    public String getDescription() { return pizza.getDescription() + " (" + size.getLabel() + ")"; }
     @Override
-    public double getCost() {
-        return size.apply(pizza.getCost());
-    }
+    public double getCost() { return size.apply(pizza.getCost()); }
 }
 
 public class Easy {
     public static void main(String[] args) {
 
-        // Test Case 1: Small Plain Pizza with Pepperoni
-        BasePizza pizza2 = new PepperoniTopping(new SizeDecorator(new PlainPizza(), Size.SMALL));
-        System.out.printf("Pizza 2: %s | Cost: $%.2f%n", pizza2.getDescription(), pizza2.getCost()); // 6.00 cost
+        // ✅ Example 1: Small Plain Pizza + Pepperoni + Coke (NO combo)
+        BasePizza order1 = new CokeAddon(
+                             new PepperoniTopping(
+                               new SizeDecorator(
+                                 new PlainPizza(), Size.SMALL)));
+        System.out.printf("Order 1: %s | Cost: $%.2f%n", order1.getDescription(), order1.getCost());
 
-        // Test Case 2: Medium Margherita Pizza with Cheese
-        BasePizza pizza3 = new CheeseTopping(new SizeDecorator(new MargheritaPizza(), Size.MEDIUM));
-        System.out.printf("Pizza 3: %s | Cost: $%.2f%n", pizza3.getDescription(), pizza3.getCost()); // 8.50 cost
+        // ✅ Example 2: Large Farmhouse Pizza + Cheese + Veggies + Fries (NO combo)
+        BasePizza order2 = new FriesAddon(
+                             new VeggieTopping(
+                               new CheeseTopping(
+                                 new SizeDecorator(
+                                   new FarmhousePizza(), Size.LARGE))));
+        System.out.printf("Order 2: %s | Cost: $%.2f%n", order2.getDescription(), order2.getCost());
+
+        // ✅ Example 3: Medium Margherita Pizza with Combo Offer (FREE Coke & Fries)
+        BasePizza order3 = new ComboOfferDecorator(
+                             new SizeDecorator(
+                               new MargheritaPizza(), Size.MEDIUM), 2.0);
+        System.out.printf("Order 3: %s | Cost: $%.2f%n", order3.getDescription(), order3.getCost());
+
+        // ✅ Example 4: Large Veggie Pizza with Cheese + Combo Offer
+        BasePizza order4 = new ComboOfferDecorator(
+                             new CheeseTopping(
+                               new SizeDecorator(
+                                 new VeggiePizza(), Size.LARGE)), 3.0);
+        System.out.printf("Order 4: %s | Cost: $%.2f%n", order4.getDescription(), order4.getCost());
     }
 }
